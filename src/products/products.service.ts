@@ -29,12 +29,21 @@ export class ProductsService {
       updatedProduct.title = title;
     }
     if (description) {
-      updatedProduct.title = title;
+      updatedProduct.description = description;
     }
-    this.products[index] = { ...product };
+    if (price) {
+      updatedProduct.price = price;
+    }
+    this.products[index] = updatedProduct;
   }
+
+  deleteProduct(prodId: string) {
+    const index = this.findProduct(prodId)[1];
+    this.products.splice(index, 1);
+  }
+
   private findProduct(id: string): [Product, number] {
-    const product = this.products.findIndex((prod) => prod.id === id);
+    const productIndex = this.products.findIndex((prod) => prod.id === id);
     const product = this.products[productIndex];
     if (!product) {
       throw new NotFoundException('Could not find product');
